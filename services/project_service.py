@@ -64,7 +64,7 @@ class ProjectService:
         if not await APIHadnler.check_if_resource_exists(external_id=schema.external_id):
             raise HTTPException(status_code=400, detail="resource now found!")
         place_database = await self.__placeRepo.add_place(project_id=project_id, schema=schema)
-        await self.database.flush()
+        await self.database.commit()
         await self.database.refresh(place_database)
         return place_database
 
@@ -80,10 +80,10 @@ class ProjectService:
 
         places_in_project = await self.__placeRepo.select_all_places_by_project_id(project_id=project_id)
 
-        for place in places_in_project:
-            if not place.is_visited:
-                break
-            place.project.is_completed = True
+        all_visited = all(place.is_visited for place in places_in_project)
+
+        if all_visited:
+            result.project.is_completed = True
 
         await self.database.commit()
 
