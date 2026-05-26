@@ -13,9 +13,9 @@ A RESTful CRUD API built with **FastAPI** and **SQLAlchemy** that helps traveler
     * Blocks project deletion if any place within it has already been visited.
     * Automatically marks a project as `completed` when all its places are marked as `visited`.
 * **Bonus Features Implemented**:
-    * 🐳 Fully Dockerized (`Dockerfile` + `docker-compose.yml`).
-    * ⚡ Caching for third-party API responses to minimize network overhead.
-    * 📝 OpenAPI/Swagger documentation auto-generated.
+    * Fully Dockerized (`Dockerfile` + `docker-compose.yml`).
+    * Caching for third-party API responses to minimize network overhead.
+    * OpenAPI/Swagger documentation auto-generated.
 
 ---
 
@@ -29,7 +29,7 @@ A RESTful CRUD API built with **FastAPI** and **SQLAlchemy** that helps traveler
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before running the project, ensure you have the following installed:
 * [Docker](https://docs.docker.com/get-docker/)
@@ -37,9 +37,12 @@ Before running the project, ensure you have the following installed:
 
 ---
 
-## 🏃 Getting Started & Deployment
+## Getting Started & Deployment
 
 ### 1. Clone the repository
+
 ```bash
-git clone [https://github.com/YOUR_USERNAME/travel-planner.git](https://github.com/YOUR_USERNAME/travel-planner.git)
-cd travel-planner
+git clone https://github.com/Killingrace/developers_today.git
+cd developers_today
+docker compose up
+```
