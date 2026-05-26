@@ -39,10 +39,16 @@ Before running the project, ensure you have the following installed:
 
 ## Getting Started & Deployment
 
-### 1. Clone the repository
+In repository add `.env` file with that values:
+
+* DB_USER= \<your_username>
+* DB_PASSWORD= \<password>
+* DB_NAME= \<database name>
+* DB_PORT= \<db port>
+* EXTERNAL_API= \<external_ip adress>
+
+and run `docker compose`
 
 ```bash
-git clone https://github.com/Killingrace/developers_today.git
-cd developers_today
 docker compose up
 ```
