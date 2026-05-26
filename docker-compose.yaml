@@ -1,0 +1,65 @@
+networks:
+  local-network:
+    driver: bridge
+
+services:
+  psql:
+    image: postgres:18.3
+    container_name: postgres
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER:-user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - POSTGRES_DB=${DB_NAME:-db}
+    ports:
+      - "5432:5432"
+    volumes:
+    - db-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 2s
+
+  seed:
+    image: backend:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["sh", "-c", "python seed.py"]
+    environment:
+      - DB_HOST=psql
+      - DB_USER=${DB_USER:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - EXTERNAL_API=${EXTERNAL_API:-https://api.artic.edu/api/v1/artworks/}
+    depends_on:
+      psql:
+        condition: service_healthy
+
+  backend:
+    image: backend:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=psql
+      - DB_USER=${DB_USER:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - EXTERNAL_API=${EXTERNAL_API:-https://api.artic.edu/api/v1/artworks/}
+    depends_on:
+      psql:
+        condition: service_healthy
+      seed:
+        condition: service_completed_successfully
+
+volumes:
+  db-data:
+    driver: local
