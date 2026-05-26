@@ -19,7 +19,7 @@ A RESTful CRUD API built with **FastAPI** and **SQLAlchemy** that helps traveler
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Framework**: FastAPI
 * **ORM**: SQLAlchemy
